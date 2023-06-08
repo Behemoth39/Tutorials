@@ -1,8 +1,10 @@
 import { useState } from "react";
+import { useAuthContext } from "../hooks/useAuthContext";
 import { useWorkoutsContext } from "../hooks/useWorkoutsContext";
 
 const WorkoutForm = () => {
   const { dispatch } = useWorkoutsContext();
+  const { user } = useAuthContext();
 
   const [title, setTitle] = useState("");
   const [load, setLoad] = useState("");
@@ -13,6 +15,11 @@ const WorkoutForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    if (!user) {
+      setError("You must login");
+      return;
+    }
+
     const workout = { title, load, reps };
 
     const response = await fetch("/api/v1/workouts", {
@@ -20,6 +27,7 @@ const WorkoutForm = () => {
       body: JSON.stringify(workout),
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${user.token}`,
       },
     });
     const json = await response.json();
@@ -39,12 +47,12 @@ const WorkoutForm = () => {
   };
 
   return (
-    <form className="create" onSubmit={handleSubmit}>
-      <h3>Add a New Excersize</h3>
+    <form className='create' onSubmit={handleSubmit}>
+      <h3>Add a New Exercise</h3>
 
-      <label>Excersize Title:</label>
+      <label>Exercise Title:</label>
       <input
-        type="text"
+        type='text'
         onChange={(e) => setTitle(e.target.value)}
         value={title}
         className={emptyFields.includes("title") ? "error" : ""}
@@ -52,7 +60,7 @@ const WorkoutForm = () => {
 
       <label>Load (in kg):</label>
       <input
-        type="number"
+        type='number'
         onChange={(e) => setLoad(e.target.value)}
         value={load}
         className={emptyFields.includes("load") ? "error" : ""}
@@ -60,14 +68,14 @@ const WorkoutForm = () => {
 
       <label>Number of Reps:</label>
       <input
-        type="number"
+        type='number'
         onChange={(e) => setReps(e.target.value)}
         value={reps}
         className={emptyFields.includes("reps") ? "error" : ""}
       />
 
       <button>Add Workout</button>
-      {error && <div className="error">{error}</div>}
+      {error && <div className='error'>{error}</div>}
     </form>
   );
 };
