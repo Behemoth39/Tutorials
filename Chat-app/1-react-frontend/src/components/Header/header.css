@@ -1,0 +1,6 @@
+.h-content {
+  background: sienna;
+  color: white;
+  border: solid 0.2rem black;
+  grid-area: header;
+}

@@ -1,0 +1,6 @@
+.f-content {
+  background: navy;
+  color: white;
+  border: solid 0.2rem black;
+  grid-area: footer;
+}

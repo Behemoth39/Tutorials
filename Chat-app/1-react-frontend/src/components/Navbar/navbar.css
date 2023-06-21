@@ -1,0 +1,7 @@
+.screen-nav-main {
+  height: 100%;
+  background: purple;
+  color: white;
+  border: solid 0.2rem black;
+  grid-area: nav;
+}

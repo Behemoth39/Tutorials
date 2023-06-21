@@ -1,0 +1,15 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+#root {
+  height: 100vh;
+  display: inline-grid;
+  grid-template-rows: 5% 85% 10%;
+  grid-template-columns: 20% 80%;
+  grid-template-areas:
+    "header header"
+    "nav chat"
+    "nav footer";
+}
