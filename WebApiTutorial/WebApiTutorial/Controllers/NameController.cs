@@ -11,7 +11,10 @@ namespace WebApiTutorial.Controllers
             new Name {Id =1, FullName ="Simon Jonsson", FirstName= "Simon", LastName= "Jonsson", Place="Local" }
         };
 
-
+/// <summary>
+/// text här
+/// </summary>
+/// <returns></returns>
         [HttpGet]
         public async Task<ActionResult<List<Name>>> Get()
         {
