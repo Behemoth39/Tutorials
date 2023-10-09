@@ -1,1 +1,2 @@
-# Tutorials i have used for fun and to learn more
+# Tutorials i have used to learn more.
+# Most of these are not fully completed.
