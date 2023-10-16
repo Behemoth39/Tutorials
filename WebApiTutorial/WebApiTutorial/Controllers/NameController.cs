@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using WebApiTutorial.Data;
 
 namespace WebApiTutorial.Controllers
 {
@@ -10,6 +12,12 @@ namespace WebApiTutorial.Controllers
         {
             new Name {Id =1, FullName ="Simon Jonsson", FirstName= "Simon", LastName= "Jonsson", Place="Local" }
         };
+        private DataContext _context;
+
+        public NameController(DataContext context)
+        {
+            _context = context;
+        }
 
 /// <summary>
 /// text här
@@ -19,13 +27,13 @@ namespace WebApiTutorial.Controllers
         public async Task<ActionResult<List<Name>>> Get()
         {
 
-            return Ok(names);
+            return Ok(await _context.Names.ToListAsync());
         }
 
         [HttpGet("{id}")]
         public async Task<ActionResult<Name>> GetId(int id)
         {
-            var name = names.Find(e => e.Id == id);
+            var name = await _context.Names.FindAsync(id);
             if (name == null)
                 return BadRequest("No name found");
             return Ok(names);
@@ -34,14 +42,15 @@ namespace WebApiTutorial.Controllers
         [HttpPost]
         public async Task<ActionResult<List<Name>>> AddName(Name name)
         {
-            names.Add(name);
-            return Ok(names);
+            _context.Names.Add(name);
+            await _context.SaveChangesAsync();
+            return Ok(await _context.Names.ToListAsync());
         }
 
         [HttpPut]
         public async Task<ActionResult<List<Name>>> UpdateName(Name nameUpdate)
         {
-            var name = names.Find(e => e.Id == nameUpdate.Id);
+           var name = await _context.Names.FindAsync(nameUpdate.Id);
             if (name == null)
                 return BadRequest("No name found");
 
@@ -50,18 +59,22 @@ namespace WebApiTutorial.Controllers
             name.LastName = nameUpdate.LastName;
             name.Place = nameUpdate.Place;
 
-            return Ok(names);
+            await _context.SaveChangesAsync();
+
+             return Ok(await _context.Names.ToListAsync());
         }
 
         [HttpDelete("{id}")]
         public async Task<ActionResult<List<Name>>> Delete(int id)
         {
-            var name = names.Find(e => e.Id == id);
+             var name = await _context.Names.FindAsync(id);
             if (name == null)
                 return BadRequest("No name found");
 
-            names.Remove(name);
-            return Ok(names);
+            _context.Names.Remove(name);
+            await _context.SaveChangesAsync();
+
+            return Ok(await _context.Names.ToListAsync());
         }
     }
 }
