@@ -13,15 +13,17 @@ const io = new Server(server, {
   },
 });
 
+// add error handling
+
 dotenv.config({ path: "./config/.env" });
 const PORT = process.env.PORT;
 
 io.on("connection", (socket) => {
   console.log(`User Connected: ${socket.id}`);
-  socket.emit("message", "Welcome"); // workings badly
+  socket.emit("message", "Welcome"); // barely working
 
   socket.on("join_room", (data) => {
-    socket.broadcast.emit("message", "User joined chat"); // workings badly
+    socket.broadcast.emit("message", "User joined chat"); // barely working
     socket.join(data);
   });
 
@@ -30,7 +32,7 @@ io.on("connection", (socket) => {
   });
 
   socket.on("disconnect", () => {
-    io.emit("message", "User Disconnected"); // workings badly
+    io.emit("message", "User Disconnected"); // barely working
   });
 });
 
